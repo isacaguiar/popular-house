@@ -31,7 +31,7 @@ public class PersonEntity {
   private Long id;
 
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name="family_id", referencedColumnName="id", nullable=false)
+  @JoinColumn(name = "family_id", referencedColumnName = "id", nullable = false)
   private FamilyEntity family;
 
   @Column(name = "age", nullable = false)
