@@ -7,9 +7,6 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
 
   jpa:
     show-sql: true
@@ -23,3 +20,4 @@ spring:
   h2:
     console:
       enabled: true
+
