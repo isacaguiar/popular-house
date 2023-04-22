@@ -16,7 +16,7 @@ public class Points {
 
   private String responsibleName;
 
-  private int score;
+  private long score;
 
   public PointsResponse toResponse() {
     return PointsResponse.builder()

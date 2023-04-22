@@ -1,6 +1,8 @@
 package br.com.house.domain.model;
 
+import br.com.house.adapter.controller.payload.response.FamilyResponse;
 import br.com.house.adapter.persistence.entity.FamilyEntity;
+import br.com.house.domain.utils.BuilderUtils;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,9 +19,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Family {
 
-  Set<Person> persons;
+  private Long id;
+  private Set<Person> persons;
 
-  Person person;
+  private Person person;
 
   public BigDecimal getIncome() {
     BigDecimal income = person.getSalaryIncome();
@@ -35,11 +38,15 @@ public class Family {
     return income;
   }
 
-  public long getDependents() {
+  public long getDependentsOver18YearsOld() {
     long temp = persons.stream().filter(
         person -> person.getAge() < 18
     ).count();
     return temp;
+  }
+
+  public long getDependents() {
+    return persons.size();
   }
 
   public FamilyEntity toEntity() {
@@ -53,5 +60,15 @@ public class Family {
       family.getPersons().add(person.toEntity(family));
     }
     return family;
+  }
+
+  public FamilyResponse toReponse() {
+    return FamilyResponse.builder()
+        .income(getIncome())
+        .dependents(getDependents())
+        .dependentsOver18YearsOld(getDependentsOver18YearsOld())
+        .person(person.toResponse())
+        .persons(BuilderUtils.toResponse(persons))
+        .build();
   }
 }

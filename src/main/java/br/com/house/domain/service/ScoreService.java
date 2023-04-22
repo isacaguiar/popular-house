@@ -1,9 +1,9 @@
 package br.com.house.domain.service;
 
+import br.com.house.domain.model.Family;
 import br.com.house.domain.strategy.ScoreStrategy;
 import br.com.house.domain.strategy.ScoreStrategyEnum;
 import br.com.house.domain.strategy.ScoreStrategyFactory;
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,23 @@ public class ScoreService {
   @Autowired
   private ScoreStrategyFactory scoreStrategyFactory;
 
-  public int score(BigDecimal amount, long dependentsNumber) {
-    int pontuacao = 0;
+  public long score(Family family) {
+    long pontuacao = 0;
+    pontuacao += getIncome(family);
+    pontuacao += getDependentsPoint(family);
+    return pontuacao;
+  }
 
-    ScoreStrategy income =
-        scoreStrategyFactory.findStrategy(ScoreStrategyEnum.INCOME);
-    pontuacao +=  income.score(amount);
-
+  private long getDependentsPoint(Family family) {
     ScoreStrategy dependents =
         scoreStrategyFactory.findStrategy(ScoreStrategyEnum.DEPENDENTS);
-    pontuacao += dependents.score(BigDecimal.valueOf(dependentsNumber));
+    return dependents.score(family);
+  }
 
-    return pontuacao;
+  private long getIncome(Family family) {
+    ScoreStrategy income =
+        scoreStrategyFactory.findStrategy(ScoreStrategyEnum.INCOME);
+    return income.score(family);
   }
 
 }

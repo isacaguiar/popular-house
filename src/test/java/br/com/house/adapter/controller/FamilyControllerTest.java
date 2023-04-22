@@ -4,17 +4,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.house.adapter.controller.payload.response.FamilyResponse;
+import br.com.house.adapter.controller.payload.response.ListFamilyResponse;
 import br.com.house.adapter.controller.payload.response.PointsResponse;
 import br.com.house.domain.exception.BusinessException;
+import br.com.house.domain.model.Family;
 import br.com.house.domain.model.Points;
 import br.com.house.domain.service.FamilyService;
 import br.com.house.utils.BuilderUtils;
 import br.com.house.utils.FileUtils;
 import br.com.house.utils.JSONUtils;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +49,7 @@ class FamilyControllerTest {
   final String PATH = "/family";
 
   @Test
-  void buyWithSuccess() throws Exception {
-
+  void addFamilyWithSuccess() throws Exception {
     Points points = BuilderUtils.getPoint("Claudio", 120);
 
     when(familyService.add(any())).thenReturn(points);
@@ -61,10 +69,12 @@ class FamilyControllerTest {
     assertNotNull(pointsResponse.getResponsibleName());
     assertEquals(points.getResponsibleName(), pointsResponse.getResponsibleName());
     assertEquals(points.getScore(), pointsResponse.getScore());
+
+    verify(familyService).add(any());
   }
 
   @Test
-  void buyWithThrowsBusinessException() throws Exception {
+  void addFamilyWithThrowsBusinessException() throws Exception {
     when(familyService.add(any())).thenThrow(BusinessException.class);
 
     mvc.perform(
@@ -76,24 +86,96 @@ class FamilyControllerTest {
     assertThrows(BusinessException.class, () -> {
       familyService.add(any());
     });
-
   }
 
   @Test
-  void buyWithThrowsNullPointerException() throws Exception {
-    when(familyService.add(any())).thenThrow(NullPointerException.class);
+  void loadByIdWithSuccess() throws Exception {
 
-    mvc.perform(
-            post(PATH)
-                .content(FileUtils.loadRequest("add-family"))
+    Family family = BuilderUtils.loadFamily();
+    when(familyService.loadById(any())).thenReturn(family);
+
+    MvcResult result = mvc.perform(
+            get(PATH + "/1")
                 .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is4xxClientError());
+        .andExpect(status().is2xxSuccessful())
+        .andReturn();
+    String content = result.getResponse().getContentAsString();
 
-    assertThrows(NullPointerException.class, () -> {
-      familyService.add(any());
-    });
+    FamilyResponse response = JSONUtils.toFamilyResponse(content);
 
+    assertNotNull(response);
+    assertNotNull(response.getPerson());
+    assertNotNull(response.getPersons());
+
+    verify(familyService).loadById(any());
   }
 
+  @Test
+  void loadByIdWithThrowsBusinessException() throws Exception {
+    when(familyService.loadById(any())).thenThrow(BusinessException.class);
+
+    mvc.perform(get(PATH + "/1").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError());
+
+    assertThrows(BusinessException.class, () -> familyService.loadById(any()));
+  }
+
+  @Test
+  void loadAllWithSuccess() throws Exception {
+
+    List<Family> list = BuilderUtils.loadFamilies();
+    when(familyService.loadAll()).thenReturn(list);
+
+    MvcResult result =
+        mvc.perform(get(PATH).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is2xxSuccessful())
+            .andReturn();
+    String content = result.getResponse().getContentAsString();
+
+    ListFamilyResponse response = JSONUtils.toListFamilyResponse(content);
+
+    assertNotNull(response);
+    assertNotNull(response.size());
+
+    verify(familyService).loadAll();
+  }
+
+  @Test
+  void loadAllWithThrowsBusinessException() throws Exception {
+    when(familyService.loadAll()).thenThrow(BusinessException.class);
+
+    mvc.perform(get(PATH).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError());
+
+    assertThrows(BusinessException.class, () -> {
+      familyService.loadAll();
+    });
+  }
+
+  @Test
+  void deleteWithSuccess() throws Exception {
+    long id = 120L;
+
+    doNothing().when(familyService).delete(id);
+
+    mvc.perform(delete(PATH + "/" + id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is2xxSuccessful())
+        .andReturn();
+
+    verify(familyService).delete(id);
+  }
+
+  @Test
+  void deleteWithThrowsBusinessException() throws Exception {
+    doThrow(new BusinessException("Error")).when(familyService).delete(any());
+
+    mvc.perform(
+            delete(PATH + "/1").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError());
+
+    assertThrows(BusinessException.class, () -> {
+      familyService.delete(any());
+    });
+  }
 
 }

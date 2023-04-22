@@ -23,10 +23,10 @@ public class FamilyServiceImpl implements FamilyService {
   @Autowired
   PersistencePort persistencePort;
 
-  public Points add(Family familyModel) {
+  public Points add(Family familyModel) throws BusinessException {
 
     persistencePort.addFamily(familyModel.toEntity());
-    int score = calculatorService.score(familyModel.getIncome(), familyModel.getDependents());
+    long score = calculatorService.score(familyModel);
     return Points.builder()
         .responsibleName(familyModel.getPerson().getName())
         .score(score)
@@ -34,8 +34,8 @@ public class FamilyServiceImpl implements FamilyService {
   }
 
   @Override
-  public Family loadFamily(Long id) throws BusinessException {
-    Optional<FamilyEntity> familyEntity = persistencePort.loadFamily(id);
+  public Family loadById(Long id) throws BusinessException {
+    Optional<FamilyEntity> familyEntity = persistencePort.loadFamilyById(id);
     AtomicReference<Family> family = new AtomicReference<>();
     familyEntity.ifPresentOrElse(
         (value) -> {
@@ -48,10 +48,14 @@ public class FamilyServiceImpl implements FamilyService {
   }
 
   @Override
-  public List<Family> loadFamilies() {
+  public List<Family> loadAll() throws BusinessException {
     List<FamilyEntity> familyEntityList =
-        persistencePort.loadFamilies();
+        persistencePort.loadAllFamilies();
     return BuilderUtils.toFamily(familyEntityList);
   }
 
+  @Override
+  public void delete(Long id) throws BusinessException {
+    persistencePort.deleteFamily(id);
+  }
 }

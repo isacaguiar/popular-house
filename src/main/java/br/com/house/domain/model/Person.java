@@ -1,5 +1,6 @@
 package br.com.house.domain.model;
 
+import br.com.house.adapter.controller.payload.response.PersonResponse;
 import br.com.house.adapter.persistence.entity.FamilyEntity;
 import br.com.house.adapter.persistence.entity.PersonEntity;
 import java.math.BigDecimal;
@@ -15,17 +16,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
-
+  private long id;
   private int age;
-
   private String name;
-
   private String documentNumber;
-
   private BigDecimal salaryIncome;
 
   public PersonEntity toEntity(FamilyEntity family) {
     return PersonEntity.builder()
+        .id(id)
         .name(name)
         .age(age)
         .documentNumber(documentNumber)
@@ -36,6 +35,17 @@ public class Person {
 
   public PersonEntity toEntity() {
     return PersonEntity.builder()
+        .id(id)
+        .name(name)
+        .age(age)
+        .documentNumber(documentNumber)
+        .salaryIncome(salaryIncome)
+        .build();
+  }
+
+  public PersonResponse toResponse() {
+    return PersonResponse.builder()
+        .id(id)
         .name(name)
         .age(age)
         .documentNumber(documentNumber)

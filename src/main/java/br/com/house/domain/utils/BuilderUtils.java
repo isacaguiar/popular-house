@@ -1,5 +1,7 @@
 package br.com.house.domain.utils;
 
+import br.com.house.adapter.controller.payload.response.FamilyResponse;
+import br.com.house.adapter.controller.payload.response.PersonResponse;
 import br.com.house.adapter.persistence.entity.FamilyEntity;
 import br.com.house.adapter.persistence.entity.PersonEntity;
 import br.com.house.domain.model.Family;
@@ -21,6 +23,16 @@ public class BuilderUtils {
     return familyList;
   }
 
+  public static List<FamilyResponse> toResponse(List<Family> familyList) {
+    List<FamilyResponse> familyResponseList = new ArrayList<>();
+    familyList.forEach(
+        familyEntity -> {
+          familyResponseList.add(familyEntity.toReponse());
+        }
+    );
+    return familyResponseList;
+  }
+
   public static Set<Person> toPerson(Set<PersonEntity> personEntitySet) {
     Set<Person> personList = new HashSet<>();
     personEntitySet.forEach(
@@ -29,5 +41,15 @@ public class BuilderUtils {
         }
     );
     return personList;
+  }
+
+  public static Set<PersonResponse> toResponse(Set<Person> personSet) {
+    Set<PersonResponse> personResponseSet = new HashSet<>();
+    personSet.forEach(
+        person -> {
+          personResponseSet.add(person.toResponse());
+        }
+    );
+    return personResponseSet;
   }
 }

@@ -18,8 +18,8 @@ public class SpringDocConfig {
             .version("v0.0.1")
             .license(new License().name("Apache 2.0").url("http://springdoc.org")))
         .externalDocs(new ExternalDocumentation()
-            .description("Popular House Wiki Documentation")
-            .url("https://github.com/isacaguiar/popular-house"));
+            .description("Popular House README.md")
+            .url("https://github.com/isacaguiar/popular-house/blob/main/README.md"));
   }
 
 }

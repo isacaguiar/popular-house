@@ -1,7 +1,10 @@
 package br.com.house.domain.port;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,6 +13,7 @@ import br.com.house.adapter.persistence.entity.FamilyEntity;
 import br.com.house.adapter.persistence.entity.PersonEntity;
 import br.com.house.adapter.persistence.repository.FamilyRepository;
 import br.com.house.adapter.persistence.repository.PersonRepository;
+import br.com.house.domain.exception.BusinessException;
 import br.com.house.utils.BuilderUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +36,7 @@ class PersistencePortTest {
   PersonRepository personRepository;
 
   @Test
-  void add() {
+  void addWithSuccess() {
 
     FamilyEntity familyEntity = BuilderUtils.loadFamilyEntity();
 
@@ -48,6 +52,18 @@ class PersistencePortTest {
 
     verify(personRepository).save(any());
     verify(familyRepository).save(any());
+  }
+
+  @Test
+  void addWithThrowsBusinessException() throws Exception {
+    FamilyEntity familyEntity = BuilderUtils.loadFamilyEntity();
+
+    doThrow(new BusinessException("Error")).when(personRepository).save(any());
+
+    assertThrows(BusinessException.class, () -> persistencePort.addFamily(familyEntity));
+
+    verify(personRepository).save(any());
+    verify(familyRepository, times(0)).save(any());
   }
 
 }

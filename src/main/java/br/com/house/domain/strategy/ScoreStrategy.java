@@ -1,10 +1,10 @@
 package br.com.house.domain.strategy;
 
-import java.math.BigDecimal;
+import br.com.house.domain.model.Family;
 
 public interface ScoreStrategy {
 
-  int score(BigDecimal income);
+  long score(Family family);
 
   ScoreStrategyEnum getStrategyName();
 }
