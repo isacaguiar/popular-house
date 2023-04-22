@@ -1,5 +1,6 @@
 package br.com.house.adapter.controller.payload.request;
 
+import br.com.house.domain.model.Person;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +22,13 @@ public class PersonRequest {
   private String documentNumber;
 
   private BigDecimal salaryIncome;
+
+  public Person toModel() {
+    return Person.builder()
+        .age(age)
+        .name(name)
+        .documentNumber(documentNumber)
+        .salaryIncome(salaryIncome)
+        .build();
+  }
 }

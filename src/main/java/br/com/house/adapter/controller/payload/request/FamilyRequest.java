@@ -1,5 +1,7 @@
 package br.com.house.adapter.controller.payload.request;
 
+import br.com.house.domain.model.Family;
+import java.util.HashSet;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,21 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FamilyRequest {
 
-  private List<PersonRequest> persons;
+  PersonRequest person;
+
+  private List<PersonRequest> dependents;
+
+  public Family toModel() {
+    Family family = Family.builder()
+        .person(person.toModel())
+        .build();
+    if (family.getPersons() == null) {
+      family.setPersons(new HashSet<>());
+    }
+    for (PersonRequest personRequest : dependents) {
+      family.getPersons().add(personRequest.toModel());
+    }
+    return family;
+  }
 
 }

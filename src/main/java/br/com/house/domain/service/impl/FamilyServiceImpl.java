@@ -1,0 +1,57 @@
+package br.com.house.domain.service.impl;
+
+import br.com.house.adapter.persistence.entity.FamilyEntity;
+import br.com.house.domain.exception.BusinessException;
+import br.com.house.domain.model.Family;
+import br.com.house.domain.model.Points;
+import br.com.house.domain.port.PersistencePort;
+import br.com.house.domain.service.FamilyService;
+import br.com.house.domain.service.ScoreService;
+import br.com.house.domain.utils.BuilderUtils;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FamilyServiceImpl implements FamilyService {
+
+  @Autowired
+  ScoreService calculatorService;
+
+  @Autowired
+  PersistencePort persistencePort;
+
+  public Points add(Family familyModel) {
+
+    persistencePort.addFamily(familyModel.toEntity());
+    int score = calculatorService.score(familyModel.getIncome(), familyModel.getDependents());
+    return Points.builder()
+        .responsibleName(familyModel.getPerson().getName())
+        .score(score)
+        .build();
+  }
+
+  @Override
+  public Family loadFamily(Long id) throws BusinessException {
+    Optional<FamilyEntity> familyEntity = persistencePort.loadFamily(id);
+    AtomicReference<Family> family = new AtomicReference<>();
+    familyEntity.ifPresentOrElse(
+        (value) -> {
+          family.set(value.toModel());
+        },
+        () -> {
+          throw new BusinessException("Family not found");
+        });
+    return family.get();
+  }
+
+  @Override
+  public List<Family> loadFamilies() {
+    List<FamilyEntity> familyEntityList =
+        persistencePort.loadFamilies();
+    return BuilderUtils.toFamily(familyEntityList);
+  }
+
+}

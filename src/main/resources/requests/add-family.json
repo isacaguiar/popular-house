@@ -1,0 +1,22 @@
+{
+  "person": {
+    "age": 39,
+    "name": "Pedro",
+    "documentNumber": "123",
+    "salaryIncome": 600
+  },
+  "dependents": [
+    {
+      "age": 19,
+      "name": "Luana",
+      "documentNumber": "565",
+      "salaryIncome": 120
+    },
+    {
+      "age": 16,
+      "name": "Heitor",
+      "documentNumber": "897",
+      "salaryIncome": 0
+    }
+  ]
+}

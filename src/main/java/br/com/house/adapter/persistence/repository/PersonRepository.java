@@ -1,7 +1,9 @@
-package br.com.house.house.adapter.persistence.repository;
+package br.com.house.adapter.persistence.repository;
 
-import br.com.house.house.adapter.persistence.entity.PersonEntity;
+import br.com.house.adapter.persistence.entity.PersonEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
 }

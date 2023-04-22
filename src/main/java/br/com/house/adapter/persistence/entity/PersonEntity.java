@@ -1,5 +1,6 @@
-package br.com.house.house.adapter.persistence.entity;
+package br.com.house.adapter.persistence.entity;
 
+import br.com.house.domain.model.Person;
 import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,13 +28,16 @@ import lombok.Setter;
 public class PersonEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(generator = "seq_person", strategy = GenerationType.SEQUENCE)
   @Column(name = "id", nullable = false)
   private Long id;
 
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "family_id", referencedColumnName = "id", nullable = false)
+  @JoinColumn(name = "family_id", referencedColumnName = "id")
   private FamilyEntity family;
+
+  @OneToOne(mappedBy = "person")
+  private FamilyEntity familyResponsible;
 
   @Column(name = "age", nullable = false)
   private int age;
@@ -45,4 +50,13 @@ public class PersonEntity {
 
   @Column(name = "salary_income")
   private BigDecimal salaryIncome;
+
+  public Person toModel() {
+    return Person.builder()
+        .age(age)
+        .name(name)
+        .documentNumber(documentNumber)
+        .salaryIncome(salaryIncome)
+        .build();
+  }
 }
