@@ -34,7 +34,6 @@ class ScoreServiceTest {
   void score(Family family, long scoreExpected) {
     long score = scoreService.score(family);
 
-    assertNotNull(score);
     assertEquals(scoreExpected, score);
   }
 
