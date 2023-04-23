@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.house.adapter.controller.payload.request.FamilyRequest;
 import br.com.house.adapter.controller.payload.response.FamilyResponse;
 import br.com.house.adapter.controller.payload.response.ListFamilyResponse;
 import br.com.house.adapter.controller.payload.response.PointsResponse;
@@ -77,14 +78,17 @@ class FamilyControllerTest {
   void addFamilyWithThrowsBusinessException() throws Exception {
     when(familyService.add(any())).thenThrow(BusinessException.class);
 
+    String request = FileUtils.loadRequest("add-family");
+    FamilyRequest familyRequest = JSONUtils.toFamilyRequest(request);
+
     mvc.perform(
             post(PATH)
-                .content(FileUtils.loadRequest("add-family"))
+                .content(request)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
 
     Throwable throwable =
-        assertThrows(BusinessException.class, () -> familyService.add(any()));
+        assertThrows(BusinessException.class, () -> familyService.add(familyRequest.toModel()));
 
     assertEquals(BusinessException.class, throwable.getClass());
 
