@@ -68,9 +68,7 @@ class FamilyServiceTest {
     Optional<FamilyEntity> familyEntity = Optional.of(BuilderUtils.loadFamilyEntity());
     when(persistencePort.loadFamilyById(id)).thenReturn(familyEntity);
 
-    assertThrows(BusinessException.class, () -> Optional
-        .ofNullable(familyService.loadById(null))
-        .orElseThrow(BusinessException::new));
+    assertThrows(BusinessException.class, () -> familyService.loadById(null));
 
   }
 
