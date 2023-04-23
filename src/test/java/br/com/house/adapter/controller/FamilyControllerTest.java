@@ -88,10 +88,7 @@ class FamilyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
 
-    Throwable throwable =
-        assertThrows(BusinessException.class, () -> familyService.add(family));
-
-    assertEquals(BusinessException.class, throwable.getClass());
+    assertThrows(BusinessException.class, () -> familyService.add(family));
 
   }
 
