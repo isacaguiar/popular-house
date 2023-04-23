@@ -16,7 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PersonRequest {
-  private long id;
   private int age;
   private String name;
   private String documentNumber;
@@ -24,7 +23,6 @@ public class PersonRequest {
 
   public Person toModel() {
     return Person.builder()
-        .id(id)
         .age(age)
         .name(name)
         .documentNumber(documentNumber)

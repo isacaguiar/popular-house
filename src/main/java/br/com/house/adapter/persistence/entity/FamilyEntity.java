@@ -42,6 +42,7 @@ public class FamilyEntity {
 
   public Family toModel() {
     return Family.builder()
+        .id(id)
         .person(person.toModel())
         .persons(BuilderUtils.toPerson(persons))
         .build();

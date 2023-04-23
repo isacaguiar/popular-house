@@ -21,20 +21,16 @@ public class Family {
 
   private Long id;
   private Set<Person> persons;
-
   private Person person;
+  private long score;
 
   public BigDecimal getIncome() {
     BigDecimal income = person.getSalaryIncome();
-    for (Person person : persons) {
-      if (person.getSalaryIncome() != null) {
-        income = income.add(person.getSalaryIncome());
-      }
-    }
 
-    /*persons.forEach(
-        person -> person.getSalaryIncome()
-    );*/
+    income = income.add(persons.stream()
+        .filter(person -> person.getSalaryIncome() != null)
+        .map(Person::getSalaryIncome)
+        .reduce(BigDecimal.ZERO, BigDecimal::add));
     return income;
   }
 
@@ -52,21 +48,21 @@ public class Family {
   public FamilyEntity toEntity() {
     FamilyEntity family = FamilyEntity.builder()
         .person(person.toEntity())
+        .persons(new HashSet<>())
         .build();
-    if (family.getPersons() == null) {
-      family.setPersons(new HashSet<>());
-    }
-    for (Person person : persons) {
-      family.getPersons().add(person.toEntity(family));
-    }
+    persons.forEach(person1 -> {
+      family.getPersons().add(person1.toEntity(family));
+    });
     return family;
   }
 
   public FamilyResponse toReponse() {
     return FamilyResponse.builder()
-        .income(getIncome())
+        .id(id)
+        .totalIncome(getIncome())
         .dependents(getDependents())
         .dependentsOver18YearsOld(getDependentsOver18YearsOld())
+        .score(score)
         .person(person.toResponse())
         .persons(BuilderUtils.toResponse(persons))
         .build();

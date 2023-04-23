@@ -25,7 +25,7 @@ public class IncomeStrategy implements ScoreStrategy {
   }
 
   private boolean isFrom901To1500(BigDecimal income) {
-    return income.compareTo(new BigDecimal(90)) > 0 && income.compareTo(new BigDecimal(150)) <= 0;
+    return income.compareTo(new BigDecimal(900)) > 0 && income.compareTo(new BigDecimal(1500)) <= 0;
   }
 
   @Override

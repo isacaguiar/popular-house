@@ -135,7 +135,6 @@ class FamilyControllerTest {
     ListFamilyResponse response = JSONUtils.toListFamilyResponse(content);
 
     assertNotNull(response);
-    assertNotNull(response.size());
 
     verify(familyService).loadAll();
   }
@@ -147,9 +146,7 @@ class FamilyControllerTest {
     mvc.perform(get(PATH).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
 
-    assertThrows(BusinessException.class, () -> {
-      familyService.loadAll();
-    });
+    assertThrows(BusinessException.class, () -> familyService.loadAll());
   }
 
   @Test
@@ -173,9 +170,7 @@ class FamilyControllerTest {
             delete(PATH + "/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
 
-    assertThrows(BusinessException.class, () -> {
-      familyService.delete(any());
-    });
+    assertThrows(BusinessException.class, () -> familyService.delete(any()));
   }
 
 }

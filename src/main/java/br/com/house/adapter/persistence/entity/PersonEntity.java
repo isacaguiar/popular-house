@@ -53,6 +53,7 @@ public class PersonEntity {
 
   public Person toModel() {
     return Person.builder()
+        .id(id)
         .age(age)
         .name(name)
         .documentNumber(documentNumber)

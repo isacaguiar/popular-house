@@ -49,9 +49,12 @@ public class FamilyServiceImpl implements FamilyService {
 
   @Override
   public List<Family> loadAll() throws BusinessException {
-    List<FamilyEntity> familyEntityList =
-        persistencePort.loadAllFamilies();
-    return BuilderUtils.toFamily(familyEntityList);
+    List<FamilyEntity> familyEntityList = persistencePort.loadAllFamilies();
+    List<Family> familyList = BuilderUtils.toFamily(familyEntityList);
+    for (Family family : familyList) {
+      family.setScore(calculatorService.score(family));
+    }
+    return familyList;
   }
 
   @Override

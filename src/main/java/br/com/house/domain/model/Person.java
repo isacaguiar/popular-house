@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
-  private long id;
+  private Long id;
   private int age;
   private String name;
   private String documentNumber;

@@ -18,21 +18,17 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FamilyRequest {
 
-  private long id;
   PersonRequest person;
   private List<PersonRequest> dependents;
 
   public Family toModel() {
     Family family = Family.builder()
-        .id(id)
         .person(person.toModel())
+        .persons(new HashSet<>())
         .build();
-    if (family.getPersons() == null) {
-      family.setPersons(new HashSet<>());
-    }
-    for (PersonRequest personRequest : dependents) {
+    dependents.forEach(personRequest -> {
       family.getPersons().add(personRequest.toModel());
-    }
+    });
     return family;
   }
 

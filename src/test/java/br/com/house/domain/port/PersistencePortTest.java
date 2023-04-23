@@ -15,6 +15,8 @@ import br.com.house.adapter.persistence.repository.FamilyRepository;
 import br.com.house.adapter.persistence.repository.PersonRepository;
 import br.com.house.domain.exception.BusinessException;
 import br.com.house.utils.BuilderUtils;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,56 @@ class PersistencePortTest {
 
     verify(personRepository).save(any());
     verify(familyRepository, times(0)).save(any());
+  }
+
+  @Test
+  void loadFamilyByIdWithSuccess() {
+
+    Long id = 1L;
+    FamilyEntity familyEntity = BuilderUtils.loadFamilyEntity();
+    Optional<FamilyEntity> optionalFamilyEntity = Optional.of(familyEntity);
+
+    when(familyRepository.findById(any())).thenReturn(optionalFamilyEntity);
+
+    Optional<FamilyEntity> retorno = persistencePort.loadFamilyById(id);
+
+    assertNotNull(retorno);
+
+    verify(familyRepository).findById(id);
+  }
+
+  @Test
+  void loadFamilyByIdWithThrowsBusinessException() {
+    Long id = 7L;
+    doThrow(new BusinessException("Error")).when(familyRepository).findById(id);
+
+    assertThrows(BusinessException.class, () -> persistencePort.loadFamilyById(id));
+
+    verify(familyRepository).findById(id);
+  }
+
+  @Test
+  void loadAllFamiliesByIdWithSuccess() {
+
+    List<FamilyEntity> familyEntityList = BuilderUtils.loadFamiliesEntities();
+
+    when(familyRepository.findAll()).thenReturn(familyEntityList);
+
+    List<FamilyEntity> retorno = persistencePort.loadAllFamilies();
+
+    assertNotNull(retorno);
+
+    verify(familyRepository).findAll();
+  }
+
+  @Test
+  void loadAllFamiliesByIdWithThrowsBusinessException() {
+    Long id = 7L;
+    doThrow(new BusinessException("Error")).when(familyRepository).findAll();
+
+    assertThrows(BusinessException.class, () -> persistencePort.loadAllFamilies());
+
+    verify(familyRepository).findAll();
   }
 
 }

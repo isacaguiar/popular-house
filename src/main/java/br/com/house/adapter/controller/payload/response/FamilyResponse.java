@@ -14,10 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FamilyResponse {
-  private long id;
+  private Long id;
   private Set<PersonResponse> persons;
   private PersonResponse person;
-  private BigDecimal income;
+  private BigDecimal totalIncome;
   private long dependentsOver18YearsOld;
   private long dependents;
+  private long score;
 }
