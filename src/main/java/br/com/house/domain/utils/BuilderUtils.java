@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BuilderUtils {
+public abstract class BuilderUtils {
 
   public static List<Family> toFamily(List<FamilyEntity> familyEntityList) {
     List<Family> familyList = new ArrayList<>();

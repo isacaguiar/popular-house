@@ -1,6 +1,6 @@
 package br.com.house.domain.strategy;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ScoreStrategyFactory {
   }
 
   private void createStrategy(Set<ScoreStrategy> scoreStrategySet) {
-    scoreStrategyMap = new HashMap<>();
+    scoreStrategyMap = new EnumMap<>(ScoreStrategyEnum.class);
     scoreStrategySet.forEach(
         scoreStrategy -> scoreStrategyMap.put(scoreStrategy.getStrategyName(), scoreStrategy)
     );
