@@ -37,14 +37,12 @@ java -jar -Dserver.port=8090 ./target/house-0.0.1-SNAPSHOT.jar
 A porta padrão é a 8090, é importante assegurar que a porta não esteja em uso para os testes e execução do projeto.
 
 ## Swagger
-```
-http://localhost:8090/swagger-ui/index.html
-```
+[http://localhost:8090/swagger-ui/index.html](http://localhost:8090/swagger-ui/index.html)
+
 
 ## Banco de Dados
+[http://localhost:8090/h2-console](http://localhost:8090/h2-console)
 ```
-http://localhost:8090/h2-console
-
 * JDBC URL: jdbc:h2:mem:house_bd
 * User: sa
 * Pass: 
