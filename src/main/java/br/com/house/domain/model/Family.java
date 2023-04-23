@@ -36,10 +36,9 @@ public class Family {
   }
 
   public long getDependentsOver18YearsOld() {
-    long temp = persons.stream().filter(
+    return persons.stream().filter(
         person -> person.getAge() < 18
     ).count();
-    return temp;
   }
 
   public long getDependents() {

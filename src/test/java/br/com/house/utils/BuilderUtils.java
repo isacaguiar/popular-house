@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BuilderUtils {
+public abstract class BuilderUtils {
 
   public static Points getPoint(String name, int score) {
     return Points.builder()
