@@ -57,5 +57,5 @@ jobs:
         with:
           args:
             -Dsonar.projectKey=popular-house
-            #-Dsonar.organization='Isac Aguiar'
+            -Dsonar.organization=isacaguiar
             #-Dsonar.login=${{ secrets.SONAR_TOKEN }}
