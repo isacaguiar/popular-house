@@ -80,6 +80,7 @@ class FamilyControllerTest {
 
     String request = FileUtils.loadRequest("add-family");
     FamilyRequest familyRequest = JSONUtils.toFamilyRequest(request);
+    Family family = familyRequest.toModel();
 
     mvc.perform(
             post(PATH)
@@ -88,7 +89,7 @@ class FamilyControllerTest {
         .andExpect(status().is4xxClientError());
 
     Throwable throwable =
-        assertThrows(BusinessException.class, () -> familyService.add(familyRequest.toModel()));
+        assertThrows(BusinessException.class, () -> familyService.add(family));
 
     assertEquals(BusinessException.class, throwable.getClass());
 
