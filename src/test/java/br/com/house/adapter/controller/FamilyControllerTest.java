@@ -121,7 +121,7 @@ class FamilyControllerTest {
     mvc.perform(get(PATH + "/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
 
-    assertThrows(BusinessException.class, () -> familyService.loadById(any()));
+    assertThrows(BusinessException.class, () -> familyService.loadById(1L));
   }
 
   @Test
@@ -174,7 +174,7 @@ class FamilyControllerTest {
             delete(PATH + "/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
 
-    assertThrows(BusinessException.class, () -> familyService.delete(any()));
+    assertThrows(BusinessException.class, () -> familyService.delete(1L));
   }
 
 }
