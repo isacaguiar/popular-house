@@ -45,6 +45,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Coverage
+        run: mvn sonar:sonar -Pcoverage
+
 #  Analysis:
 #    name: Analyze Sonar Cloud
 #    runs-on: ubuntu-latest
