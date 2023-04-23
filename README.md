@@ -1,4 +1,4 @@
-# Popular Houser
+# Popular House
 O Popular House é uma API para auxiliar na seleção de famílias aptas a ganharem casa popular através de pontuação. 
 
 # Objetivo
