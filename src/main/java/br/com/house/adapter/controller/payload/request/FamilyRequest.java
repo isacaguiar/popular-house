@@ -26,9 +26,11 @@ public class FamilyRequest {
         .person(person.toModel())
         .persons(new HashSet<>())
         .build();
-    dependents.forEach(personRequest -> {
-      family.getPersons().add(personRequest.toModel());
-    });
+    if (dependents != null) {
+      dependents.forEach(personRequest -> {
+        family.getPersons().add(personRequest.toModel());
+      });
+    }
     return family;
   }
 

@@ -23,7 +23,7 @@ public class Family {
   private Long id;
   private Set<Person> persons;
   private Person person;
-  private long score;
+  private Long score;
 
   public BigDecimal getIncome() {
     BigDecimal income = person.getSalaryIncome();

@@ -8,6 +8,8 @@ import br.com.house.domain.port.PersistencePort;
 import br.com.house.domain.service.FamilyService;
 import br.com.house.domain.service.ScoreService;
 import br.com.house.domain.utils.BuilderUtils;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -54,6 +56,9 @@ public class FamilyServiceImpl implements FamilyService {
     for (Family family : familyList) {
       family.setScore(calculatorService.score(family));
     }
+
+    Collections.sort(familyList, (f1, f2) -> f2.getScore().compareTo(f1.getScore()));
+
     return familyList;
   }
 

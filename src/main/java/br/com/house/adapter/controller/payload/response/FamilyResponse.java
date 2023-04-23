@@ -20,5 +20,5 @@ public class FamilyResponse {
   private BigDecimal totalIncome;
   private long dependentsOver18YearsOld;
   private long dependents;
-  private long score;
+  private Long score;
 }

@@ -1,7 +1,6 @@
 package br.com.house.domain.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import br.com.house.domain.model.Family;
 import br.com.house.domain.strategy.ScoreStrategyFactory;
