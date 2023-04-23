@@ -9,7 +9,6 @@ import br.com.house.domain.service.FamilyService;
 import br.com.house.domain.service.ScoreService;
 import br.com.house.domain.utils.BuilderUtils;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -40,9 +39,7 @@ public class FamilyServiceImpl implements FamilyService {
     Optional<FamilyEntity> familyEntity = persistencePort.loadFamilyById(id);
     AtomicReference<Family> family = new AtomicReference<>();
     familyEntity.ifPresentOrElse(
-        (value) -> {
-          family.set(value.toModel());
-        },
+        (value) -> family.set(value.toModel()),
         () -> {
           throw new BusinessException("Family not found");
         });
