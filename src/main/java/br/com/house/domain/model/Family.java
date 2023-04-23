@@ -5,6 +5,7 @@ import br.com.house.adapter.persistence.entity.FamilyEntity;
 import br.com.house.domain.utils.BuilderUtils;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +29,8 @@ public class Family {
     BigDecimal income = person.getSalaryIncome();
 
     income = income.add(persons.stream()
-        .filter(person -> person.getSalaryIncome() != null)
         .map(Person::getSalaryIncome)
+        .filter(Objects::nonNull)
         .reduce(BigDecimal.ZERO, BigDecimal::add));
     return income;
   }
