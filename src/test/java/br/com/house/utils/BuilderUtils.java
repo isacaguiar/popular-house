@@ -31,6 +31,7 @@ public class BuilderUtils {
   public static Family loadFamily3() {
     return getFamily(loadPerson2(), loadPersons2());
   }
+
   public static Family loadFamily4() {
     return getFamily(loadPerson2(), new HashSet<>());
   }
