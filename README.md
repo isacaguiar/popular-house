@@ -48,6 +48,14 @@ A porta padrão é a 8090, é importante assegurar que a porta não esteja em us
 * Pass: 
 ```
 
+## Sonar
+[https://sonarcloud.io/project/overview?id=isacaguiar_popular-house](https://sonarcloud.io/project/overview?id=isacaguiar_popular-house)
+
+## Jacoco
+```
+<caminho-do-projeto>/target/site/jacoco/index.html
+```
+---
 ## APIs
 
 ### Lista as famílias cadatradas ordenadas pela pontuação
